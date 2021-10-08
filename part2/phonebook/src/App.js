@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import numbersService from './services/numbersService'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ])
+  const [persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [filter, setFilter] = useState('')
+
+  useEffect(() => {
+    console.log('effect')
+    numbersService
+        .getAll()
+        .then(initialPersons => {
+          setPersons(initialPersons)
+        })
+  }, [])
 
   const numbersToShow = filter === '' ? persons : persons.filter(person =>
       person.name.toLowerCase().includes(filter.toLowerCase())
@@ -36,9 +41,10 @@ const App = () => {
       return
     }
 
-    console.log("Before adding to array",persons)
-    setPersons(persons.concat(person))
-    console.log("After adding to array",persons)
+    numbersService.create(person)
+                  .then(returnedPerson => {
+                    setPersons(persons.concat(returnedPerson))
+                  })
     }
 
   const handleNameChange = (event) => {
@@ -56,7 +62,24 @@ const App = () => {
       setFilter(event.target.value)
   }
 
-  const showRows = () => numbersToShow.map(person => <p key={person.id}>{person.name} {person.number}</p>)
+  const deletePerson = (id) => {
+    const filteredPerson = persons.filter(person => person.id === id)
+    const personName = filteredPerson[0].name
+    const personId = filteredPerson[0].id
+    if (window.confirm(`Delete ${personName} ?`)) {
+      numbersService
+        .deletePerson(personId)
+      console.log(`${personName} successfully deleted`)
+      setPersons(persons.filter(person => person.id !== personId))
+    }
+  }
+
+  const showRows = () => numbersToShow.map(person => 
+        <li key={person.id}>
+          {person.name} {person.number} 
+          <button onClick={deletePerson(person.id)}>delete</button>
+        </li>
+        )
 
   return (
     <div>
