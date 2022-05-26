@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from 'axios'
+import Weather from "./components/Weather";
 
 const App = () => {
   const [countries, setCountries] = useState([])
@@ -53,6 +54,7 @@ const App = () => {
 
   const handleShow = (country) => {
     console.log('country passed to handleShow: ',country)
+   
     return (
       <div>
         <h1>{country.name}</h1>
@@ -63,6 +65,7 @@ const App = () => {
           {country.languages.map(language => <li key={language.name}>{language.name}</li>)}
         </ul>
         <img src={country.flags.png} alt='country code' />
+        <Weather country={country} />
       </div>
     )
   }
