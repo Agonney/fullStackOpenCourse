@@ -13,7 +13,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
-  
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const App = () => {
     e.preventDefault()
 
     try{
-      const user = await loginService.login({username, password})
+      const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
@@ -47,7 +46,7 @@ const App = () => {
       setTimeout(() => {
         setMessage(null)
       }, 5000)
-    } 
+    }
     catch (exception) {
       setMessage(`[ERROR] Login failed: ${exception.message}`)
       setTimeout(() => {
@@ -78,19 +77,19 @@ const App = () => {
   return (
     <div>
       <Notification message={message} />
-      {user === null 
-        ? 
+      {user === null
+        ?
         <div>
           <h2>log in to application</h2>
-            <LoginForm 
-              username={username}
-              password={password}
-              handleUsernameChange={({target}) => setUsername(target.value)}
-              handlePasswordChange={({target}) => setPassword(target.value)}
-              handleSubmit={handleLogin}
-            />
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
         </div>
-        : 
+        :
         <div>
           <h2>Blogs</h2>
           <div>
@@ -102,7 +101,7 @@ const App = () => {
             <BlogForm handleSubmit={handleBlog}/>
           </Togglable>
           {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} loggedUser={user}/>
+            <Blog key={blog.id} blog={blog} loggedUser={user}/>
           )}
         </div>
       }

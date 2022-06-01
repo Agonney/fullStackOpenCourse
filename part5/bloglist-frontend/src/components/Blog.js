@@ -1,7 +1,7 @@
-import { useState } from "react"
-import blogService from "../services/blogs"
+import { useState } from 'react'
+import blogService from '../services/blogs'
 
-const Blog = ({blog, loggedUser}) => {
+const Blog = ({ blog, loggedUser }) => {
   const [visible, setVisible] = useState(false)
   const [removable, setRemovable] = useState(false)
   const toggleVisibility = () => {
@@ -41,7 +41,7 @@ const Blog = ({blog, loggedUser}) => {
         {blog.title} {blog.author} <button onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button>
       </div>
 
-      {visible && 
+      {visible &&
         <div>
           <p>{blog.url}</p>
           <div>
@@ -51,13 +51,13 @@ const Blog = ({blog, loggedUser}) => {
         </div>
       }
 
-      {removable && 
+      {removable &&
         <div>
           <button onClick={handleRemove}>remove</button>
         </div>
       }
 
-   </div> 
+    </div>
   )
 }
 
