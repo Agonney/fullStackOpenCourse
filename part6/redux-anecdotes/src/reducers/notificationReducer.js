@@ -19,10 +19,10 @@ const notificationSlice = createSlice({
 export const { setNotification, removeNotification } = notificationSlice.actions
 
 export const addNotification =  (text, seconds) => {
-    console.log(text, seconds)
     return async dispatch => {
         dispatch(setNotification(text))
-        setTimeout(() => {
+        clearTimeout(window["reload_timer"])
+        window["reload_timer"] = setTimeout(() => {
             dispatch(removeNotification())
         }, seconds * 1000)
     }
