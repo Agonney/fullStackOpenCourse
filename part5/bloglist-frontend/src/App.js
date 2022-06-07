@@ -6,6 +6,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import Users from './components/Users'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -103,6 +104,7 @@ const App = () => {
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} loggedUser={user}/>
           )}
+          <Users />
         </div>
       }
     </div>
