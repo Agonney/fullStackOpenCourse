@@ -1,10 +1,12 @@
 import { CourseParts } from "../types";
+import Part from "./Part";
 
-const Content = (props: CourseParts): JSX.Element => {
+const Content = ({courseParts}: CourseParts): JSX.Element => {
     return (
-    <div>
-        {props.courseParts.map(part => <p>{part.name} {part.exerciseCount}</p>)}
-    </div>
+        <div>
+            {courseParts.map((part, i) => 
+                <Part key={i} coursePart={part} />)}
+        </div>
     )
  }
 export default Content;
