@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core"
+import { Box, Card, Typography } from "@material-ui/core"
 import axios from "axios"
 import React from "react"
 import { useParams } from "react-router-dom"
@@ -10,21 +10,27 @@ import FemaleIcon from '@mui/icons-material/Female'
 import TransIcon from '@mui/icons-material/Transgender'
 
 const SinglePatientPage = () => {
-    const [{patient}, dispatch] = useStateValue()
+    const [{patients}, dispatch] = useStateValue()
     const {id} = useParams<{id: string}>()
-    React.useEffect(() =>{
-        console.log('i fire once');
-        const fetchPatient = async () => {
-            try{
-                const {data: patient} = await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`)
-                dispatch(setPatient(patient))
-            }
-            catch(error){
-                console.log(error)
-            }
-        }
-        if(!patient) fetchPatient()
-    }, [dispatch])
+    // React.useEffect(() =>{
+    //     console.log('i fire once');
+    //     const fetchPatient = async () => {
+    //         try{
+    //             const {data: patient} = await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`)
+    //             dispatch(setPatient(patient))
+    //         }
+    //         catch(error){
+    //             console.log(error)
+    //         }
+    //     }
+    //    fetchPatient()
+    // }, [dispatch])
+    const patient = Object.values(patients).find(
+        (patient: Patient) => patient.id === id
+      );
+
+      console.log(patients)
+    
 
     const icon = (gender: Gender | undefined) => {
         switch(gender){
@@ -41,13 +47,15 @@ const SinglePatientPage = () => {
 
     return(
         <div className="app">
-            <Box>
                 <Typography variant="h4" style={{ marginTop: "0.5em" }}>    
                     {patient?.name} {icon(patient?.gender)}
                 </Typography>
                 <Typography variant="subtitle1">ssn: {patient?.ssn}</Typography>
                 <Typography variant="subtitle1">occupation: {patient?.occupation}</Typography>
-            </Box>
+                <Typography variant="h5" style={{ marginTop: "0.5em" }}>entries</Typography>
+                {patient?.entries.map(entry => {
+                    <p>{entry.date}</p>
+                })}
         </div>
     )
 }
