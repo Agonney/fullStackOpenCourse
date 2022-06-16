@@ -2,6 +2,19 @@ const express = require('express');
 const { Todo } = require('../mongo')
 const router = express.Router();
 
+router.get('/:id', async (req, res) => {
+  const id = req.params.id
+  const todo = await Todo.find({id})
+  res.send(todo)
+})
+
+router.put('/:id', async (req, res) => {
+  const id = req.params.id
+  const todo = await Todo.findByIdAndUpdate({id})
+  res.send(todo)
+})
+
+
 /* GET todos listing. */
 router.get('/', async (_, res) => {
   const todos = await Todo.find({})
